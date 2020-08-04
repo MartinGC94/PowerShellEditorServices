@@ -118,6 +118,11 @@ namespace Microsoft.PowerShell.EditorServices.Handlers
                 return SemanticTokenType.Operator;
             }
 
+            if ((token.TokenFlags & TokenFlags.AttributeName) != 0)
+            {
+                return SemanticTokenType.Macro ;
+            }
+
             if ((token.TokenFlags & TokenFlags.TypeName) != 0)
             {
                 return SemanticTokenType.Type;
@@ -127,6 +132,11 @@ namespace Microsoft.PowerShell.EditorServices.Handlers
             if ((token.TokenFlags & TokenFlags.MemberName) != 0)
             {
                 return SemanticTokenType.Property;
+            }
+
+            if (token.Kind == TokenKind.Generic && token.TokenFlags == TokenFlags.None)
+            {
+                return SemanticTokenType.Label;
             }
 
             // Only check token kind after checking flags
